@@ -1,0 +1,24 @@
+S -> Variable S | Con S | Loop S | Variable | Con | Loop
+
+Loop -> Loopc Expr : begin SPrime end
+SPrime -> Assignment SPrime | Assignment
+
+Con -> if Expr : WS begin WS SPrime WS end Conti WS | if Expr : WS begin WS SPrime WS end WS
+Conti -> elif Expr : begin SPrime end Conti | else: begin S end
+
+Attr -> = | -= | += | *= | /= | %=
+Variable -> int Ids; WS | int Id Attr Expr; WS | int Str; WS
+Ids -> Id,Ids | Id
+Id -> Alphabet NA
+Alphabet -> [A-Za-z]+
+Num -> [0-9]+
+NA -> Alphabet | Num | _ | NA NA 
+Str -> Id,Str,Num | Id=Num | Id,Str
+
+Assignment -> Id Attr Expr; WS
+Expr -> Term or Expr | Term and Expr | Term
+Term -> TermPrime >= TermPrime | TermPrime <= TermPrime | TermPrime == TermPrime | TermPrime != TermPrime | TermPrime > TermPrime | TermPrime < TermPrime | TermPrime
+TermPrime -> Op + TermPrime | Op - TermPrime | Op
+Op -> OpPrime * Op | OpPrime / Op | OpPrime % Op | OpPrime
+OpPrime -> Factor ^ OpPrime
+Factor -> id | Num | (Expr)
